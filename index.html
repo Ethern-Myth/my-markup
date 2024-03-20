@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="This web application allows users to submit inquiries about camp activities.">
+        <meta name="author" content="Ethern Myth">
+        <title>Camp Activities Inquiry</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            section {
+                background-color: #fff;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+                width: 400px;
+            }
+
+            h1 {
+                color: #0070c9;
+                text-align: center;
+                font-weight: bold;
+                font-size: 24px;
+            }
+
+            label {
+                display: block;
+                margin-top: 10px;
+                color: #555;
+                font-size: 16px;
+            }
+
+            select,
+            textarea,
+            select:focus,
+            textarea:focus {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 16px;
+                color: #555;
+                outline-color: #0070c9;
+            }
+
+            .error {
+                border-color: #ff0000;
+            }
+
+            button {
+                width: 100%;
+                background-color: #0070c9;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                cursor: pointer;
+                margin-top: 20px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            button:hover {
+                background-color: #005aa7;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <section id="camp-activities-inquiry">
+            <h1>Camp Activities Inquiry</h1>
+            <form action="/submit-form" method="POST">
+                <label for="activity-select">Which camp activities are you most looking forward to?</label>
+                <select id="activity-select" name="activity">
+                    <option value="">--Please choose an option--</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="canoeing">Canoeing</option>
+                    <option value="fishing">Fishing</option>
+                    <option value="crafts">Crafts</option>
+                    <option value="archery">Archery</option>
+                </select>
+
+                <label for="food-allergies">Food Allergies (if any)</label>
+                <textarea id="food-allergies" name="food_allergies" rows="4" cols="50"></textarea>
+
+                <label for="additional-info">Additional things the counselor should know</label>
+                <textarea id="additional-info" name="additional_info" rows="4" cols="50"></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <script>
+            document.querySelector('form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Validation
+                let isError = false;
+                const activitySelect = document.getElementById('activity-select');
+                const foodAllergies = document.getElementById('food-allergies');
+                const additionalInfo = document.getElementById('additional-info');
+
+                [activitySelect].forEach(field => {
+                    if (field.value.trim() === '') {
+                        field.classList.add('error');
+                        isError = true;
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+
+                if (!isError) {
+                    // Store form data to localStorage
+                    const formData = {
+                        activity: activitySelect.value,
+                        foodAllergies: foodAllergies.value,
+                        additionalInfo: additionalInfo.value
+                    };
+                    localStorage.setItem('formData', JSON.stringify(formData));
+
+                    // Redirect to thankyou.html
+                    window.location.href = 'thankyou.html';
+                }
+            });
+        </script>
+
+    </body>
+
+</html>
